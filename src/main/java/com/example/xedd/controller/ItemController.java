@@ -52,8 +52,10 @@ public class ItemController {
         return ResponseEntity.created(location).body(location);
     }
 
+
     @GetMapping
     public List<Item> getAll(){
+        List<Item> items= itemService.getAllItems();  //debug
         return itemService.getAllItems();
     }
 

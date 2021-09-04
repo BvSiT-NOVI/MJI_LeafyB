@@ -18,8 +18,8 @@ public class Item {
     private String mediaType;
     private String location;
 
-    //@Enumerated(value = EnumType.STRING)
-    //private Difficulty difficulty;
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     private Date uploadedDate;
 
@@ -148,11 +148,11 @@ public class Item {
         this.category = category;
     }
 
-//    public Difficulty getDifficulty() {
-//        return difficulty;
-//    }
-//
-//    public void setDifficulty(Difficulty difficulty) {
-//        this.difficulty = difficulty;
-//    }
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
 }

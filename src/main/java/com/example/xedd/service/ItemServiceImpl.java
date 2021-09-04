@@ -2,13 +2,11 @@ package com.example.xedd.service;
 
 import com.example.xedd.dto.ItemRequestDto;
 import com.example.xedd.dto.ItemResponseDto;
-import com.example.xedd.dto.MessageRequestDto;
-import com.example.xedd.dto.MessageResponseDto;
+import com.example.xedd.exception.XeddErrMessage;
 import com.example.xedd.exception.FileStorageException;
 import com.example.xedd.exception.NotFoundException;
 import com.example.xedd.exception.RecordNotFoundException;
 import com.example.xedd.model.Item;
-import com.example.xedd.model.Message;
 import com.example.xedd.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +30,8 @@ import java.util.*;
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    private final String err_msg_duplicate_post_name="Duplicate post name";
+
     //Uit FilestorageserviceImpl
     @Value("${app.upload.dir:...}")
     private String uploadDirectory;  // relative to root
@@ -54,9 +54,10 @@ public class ItemServiceImpl implements ItemService {
         return repository.findAll();
     }
 
-
-
     public long addItem(ItemRequestDto itemRequestDto) {
+        if (repository.existsItemByName(itemRequestDto.getName())) {
+            throw new FileStorageException(XeddErrMessage.err_msg_duplicate_post_name);
+        }
 
         MultipartFile file =itemRequestDto.getFile();
         String originalFilename = "";
@@ -76,8 +77,8 @@ public class ItemServiceImpl implements ItemService {
         if (copyLocation != null ) { newFileToStore.setLocation(copyLocation.toString()); }
         newFileToStore.setName(itemRequestDto.getName());
         newFileToStore.setDescription(itemRequestDto.getDescription());
-       Item saved = repository.save(newFileToStore);
-
+        newFileToStore.setDifficulty(itemRequestDto.getDifficulty());
+        Item saved = repository.save(newFileToStore);
         return saved.getId();
     }
 

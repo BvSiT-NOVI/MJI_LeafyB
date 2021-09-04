@@ -1,5 +1,6 @@
 package com.example.xedd.dto;
 
+import com.example.xedd.model.Difficulty;
 import lombok.Data;
 import com.example.xedd.model.Item;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,8 @@ public class ItemRequestDto {
     private String description;
     //public boolean isSeed;
     private MultipartFile file;
+
+    private Difficulty difficulty;
 
 //    public static ItemRequestDto fromItem(Item item) {
 //        var dto = new ItemRequestDto();
